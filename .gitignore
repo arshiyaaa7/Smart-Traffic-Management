@@ -1,0 +1,24 @@
+# IDE and virtual environment
+.idea/
+.venv/
+
+# Datasets & Models (to be excluded before making public)
+resources/
+all_modules/Accident Detection/data/
+all_modules/Emergency_vehicles/keras_model.h5
+all_modules/Emergency_vehicles/rough.py
+
+# Temporary/rough or sensitive simulation files
+all_modules/Simulation/images/
+all_modules/Simulation/bounding_box_simulation1.py
+all_modules/Simulation/current.py
+all_modules/Simulation/current_yash.py
+all_modules/Simulation/final_running.py
+all_modules/Simulation/Intersection_image.py
+all_modules/Simulation/simulation.py
+all_modules/Simulation/Simulator.py
+all_modules/Simulation/simulator_rough.py
+
+# Static files (optional, if they're generated)
+all_modules/Bounding Box Implementation/static/
+

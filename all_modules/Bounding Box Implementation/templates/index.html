@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Detection</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .upload-box {
+            border: 2px dashed #007BFF;
+            padding: 20px;
+            background: #f9f9f9;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .upload-box p {
+            font-size: 16px;
+        }
+        .upload-box .browse-btn {
+            color: #007BFF;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #upload-btn {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        #upload-btn:hover {
+            background: #0056b3;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .image-box {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+        .image-box img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .bbox-height, .timer {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Image Detection</h1>
+        <p>Upload images to detect objects with bounding boxes</p>
+        <div class="upload-box" id="drop-area">
+            <input type="file" id="file-input" multiple accept="image/*" style="display:none">
+            <p>Drag & Drop images or <span class="browse-btn">Browse</span></p>
+        </div>
+        <button id="upload-btn">Upload & Process</button>
+        <div class="image-grid" id="image-container"></div>
+    </div>
+    <script>
+        document.getElementById('drop-area').addEventListener('click', function() {
+            document.getElementById('file-input').click();
+        });
+
+        document.getElementById('upload-btn').addEventListener('click', function() {
+            let input = document.getElementById('file-input');
+            let imageContainer = document.getElementById('image-container');
+
+            if (input.files.length < 4) {
+                alert("Please upload at least 4 images.");
+                return;
+            }
+
+            let formData = new FormData();
+            for (let i = 0; i < input.files.length; i++) {
+                formData.append("images", input.files[i]);
+            }
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                imageContainer.innerHTML = "";
+                data.forEach(result => {
+                    let div = document.createElement('div');
+                    div.classList.add('image-box');
+                    div.innerHTML = `<img src="${result.image}" alt="Processed Image">
+                                     <p class="bbox-height">Height: ${result.height}px</p>
+                                     <p class="timer">Timer: ${result.timer}s</p>`;
+                    imageContainer.appendChild(div);
+                });
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
