@@ -1,4 +1,4 @@
-# 🚦 Smart Traffic Management System
+# 🚦 Real-Time AI Traffic Control using Traffic Length Metrics
 
 An AI-driven traffic control system designed to improve urban mobility by adapting traffic signals based on real-time road conditions.
 
